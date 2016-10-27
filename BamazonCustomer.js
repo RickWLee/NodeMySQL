@@ -4,6 +4,7 @@
 //Create connection
 
 var mysql = require('mysql');
+var inquirer = require('inquirer');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -11,26 +12,83 @@ var connection = mysql.createConnection({
     user: "root", //Your username
     password: "", //Your password
     database: "Bamazon"
-})
+});
+
 
 //Test connection
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-})
+});
 
 //Display all products
 var listProduct = function(){
-	connection.query('SElECT * FROM products', function(err, request){
-		console.log(request);
-	})
+
+	connection.query('SElECT * FROM products', function(err, respond){
+		console.log(respond);
+    inquirer.prompt([{
+        name: "item",
+        type: "input",
+        message:  "What product you are interested, please type itemID",
+    }, {
+        // The second message should ask how many units of the product they would like to buy.
+        name: "quantityBuy",
+        type: "input",
+        message:  "How many units you want to buy?",
+    }]).then(function(answer) {
+        console.log(answer);
+        var quantityBuy= parseInt(answer.quantityBuy);
+        console.log(quantityBuy);
+        connection.query("SElECT StockQuantity FROM products WHERE ?", [{
+                itemID: answer.item
+            }], function(err, respond) {
+                // console.log(respond);
+                //cannot extract StockQuantity
+                // console.log(respond[0].StockQuantity);
+                if (respond[0].StockQuantity < quantityBuy){
+                    console.log("There is not enough quantity to meet your needs");
+                } else{
+                    StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
+                    console.log(StockQuantity);
+                }
+        });
+    });
+
+    
+	}); 
+    
 }
 
-// The app should then prompt users with two messages.
+// // SELECT * FROM [table] WHERE [column] = [value]
+// // The app should then prompt users with two messages.
 
-// The first should ask them the ID of the product they would like to buy.
-// The second message should ask how many units of the product they would like to buy.
+// // The first should ask them the ID of the product they would like to buy.
+// // var buyProduct = function() {
+// //     inquirer.prompt([{
+// //         name: "item",
+// //         type: "input",
+// //         message:  "What product you are interested, please type itemID",
+// //     }, {
+// //         // The second message should ask how many units of the product they would like to buy.
+// //         name: "quantityBuy",
+// //         type: "input",
+// //         message:  "How many units you want to buy?",
+// //     }]).then(function(answer) {
+// //         console.log(answer);
+// //         connection.query("UPDATE products SET ? WHERE?", [{
+// //                 
+// //                 StockQuantity: updateAmount
+// //             }, {
+// //                 itemID: answer.item
+// //             }], function(err, respond) {
+// //                 console.log("updating successfully");
+// //         });
+// //     });
+// // }
 
+
+
+// // UPDATE [table] SET [column] = '[updated-value]' WHERE [column] = [value];
 
 
 
