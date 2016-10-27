@@ -45,62 +45,35 @@ var listProduct = function(){
                 // console.log(respond);
                 //cannot extract StockQuantity
                 // console.log(respond[0].StockQuantity);
+                // Check if the quantity is enough in the stock. if not show user "Insufficient quantity"
                 if (respond[0].StockQuantity < quantityBuy){
-                    console.log("There is not enough quantity to meet your needs");
-                } else{
+                    console.log("Insufficient quantity!");
+                    listProduct();
+                } else {
+                    //If the quantity is enough, fulfill customer's order and update the store
                     StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
                     console.log(StockQuantity);
+                    connection.query("UPDATE products SET ? WHERE ?", [{
+                        StockQuantity: StockQuantity
+                    },{
+                        itemID: answer.item
+                    }], function(err, respond){
+                        console.log("Quantity Update!");
+                        listProduct();
+                    });
+      
                 }
+            });
         });
-    });
-
-    
-	}); 
-    
+	});   
 }
 
-// // SELECT * FROM [table] WHERE [column] = [value]
-// // The app should then prompt users with two messages.
-
-// // The first should ask them the ID of the product they would like to buy.
-// // var buyProduct = function() {
-// //     inquirer.prompt([{
-// //         name: "item",
-// //         type: "input",
-// //         message:  "What product you are interested, please type itemID",
-// //     }, {
-// //         // The second message should ask how many units of the product they would like to buy.
-// //         name: "quantityBuy",
-// //         type: "input",
-// //         message:  "How many units you want to buy?",
-// //     }]).then(function(answer) {
-// //         console.log(answer);
-// //         connection.query("UPDATE products SET ? WHERE?", [{
-// //                 
-// //                 StockQuantity: updateAmount
-// //             }, {
-// //                 itemID: answer.item
-// //             }], function(err, respond) {
-// //                 console.log("updating successfully");
-// //         });
-// //     });
-// // }
 
 
 
 // // UPDATE [table] SET [column] = '[updated-value]' WHERE [column] = [value];
 
-
-
 listProduct();
 
 
-
-
-// Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-
-// If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
-// However, if your store does have enough of the product, you should fulfill the customer's order.
-
-// This means updating the SQL database to reflect the remaining quantity.
 // Once the update goes through, show the customer the total cost of their purchase.
