@@ -36,10 +36,10 @@ var listProduct = function(){
         type: "input",
         message:  "How many units you want to buy?",
     }]).then(function(answer) {
-        console.log(answer);
+        // console.log(answer);
         var quantityBuy= parseInt(answer.quantityBuy);
-        console.log(quantityBuy);
-        connection.query("SElECT StockQuantity FROM products WHERE ?", [{
+        // console.log(quantityBuy);
+        connection.query("SElECT Price, StockQuantity FROM products WHERE ?", [{
                 itemID: answer.item
             }], function(err, respond) {
                 // console.log(respond);
@@ -53,13 +53,16 @@ var listProduct = function(){
                     //If the quantity is enough, fulfill customer's order and update the store
                     StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
                     console.log(StockQuantity);
+                    var Total= respond[0].Price*quantityBuy;
                     connection.query("UPDATE products SET ? WHERE ?", [{
                         StockQuantity: StockQuantity
                     },{
                         itemID: answer.item
                     }], function(err, respond){
+                        // console.log(respond);
                         console.log("Quantity Update!");
-                        listProduct();
+                        console.log("Total cost for your order is $",Total);
+                        // listProduct();
                     });
       
                 }
