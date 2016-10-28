@@ -48,11 +48,11 @@ var listProduct = function(){
                 // Check if the quantity is enough in the stock. if not show user "Insufficient quantity"
                 if (respond[0].StockQuantity < quantityBuy){
                     console.log("Insufficient quantity!");
-                    listProduct();
+                    StartAgain();
                 } else {
                     //If the quantity is enough, fulfill customer's order and update the store
                     StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
-                    console.log(StockQuantity);
+                    // console.log(StockQuantity);
                     var Total= respond[0].Price*quantityBuy;
                     connection.query("UPDATE products SET ? WHERE ?", [{
                         StockQuantity: StockQuantity
@@ -60,9 +60,9 @@ var listProduct = function(){
                         itemID: answer.item
                     }], function(err, respond){
                         // console.log(respond);
-                        console.log("Quantity Update!");
+                        console.log("Our inventory is updated!");
                         console.log("Total cost for your order is $",Total);
-                        // listProduct();
+                        StartAgain();
                     });
       
                 }
@@ -72,11 +72,24 @@ var listProduct = function(){
 }
 
 
+var StartAgain = function(){
+    inquirer.prompt({
+        name: "buyOrnot",
+        type: "rawlist",
+        message: "Would you like to have another purchase? ",
+        choices: ["YES","NO"]
+    }).then(function(answer){
+        // console.log(answer);
+        if(answer.buyOrnot.toUpperCase()=="YES"){
+            listProduct();  
+        } else {
+            console.log("Thank you for coming and have nice day!");
+        }
 
+    })
 
-// // UPDATE [table] SET [column] = '[updated-value]' WHERE [column] = [value];
+}
+
 
 listProduct();
 
-
-// Once the update goes through, show the customer the total cost of their purchase.
