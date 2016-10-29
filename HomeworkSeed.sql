@@ -15,7 +15,7 @@ INSERT INTO `Products` (`ProductName`, `DepartmentName`, `Price`,`StockQuantity`
 VALUES ('toy train set','Kid', '50.00', '100'), 
 ('macbook pro','electronic', '1500.00', '50'),
 ('milk','food','3.25','100'),
-('Sofa','furniture','1200','10'),
+('Sofa','furniture','1200.00','10'),
 ('stove','kitchen','350.00', '20'),
 ('LCD TV 70 inch','electronic','999.99', '10'),
 ('dinning table','furniture','500.00', '15'),

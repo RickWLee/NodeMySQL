@@ -6,6 +6,7 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -23,13 +24,25 @@ connection.connect(function(err) {
 
 //Display all products
 var listProduct = function(){
-
+       
 	connection.query('SElECT * FROM products', function(err, respond){
-		console.log(respond);
+		// console.log(respond); 
+        for (var i=0; i<respond.length; i++){
+     
+            console.log(respond[i].ItemID+"    "+respond[i].ProductName+"    "+respond[i].Price);
+        }
+
     inquirer.prompt([{
         name: "item",
         type: "input",
         message:  "What product you are interested, please type itemID",
+        validate: function(value){
+            if (isNaN(value) == false){
+                return true;
+            } else {
+                return false;
+            }
+        }
     }, {
         // The second message should ask how many units of the product they would like to buy.
         name: "quantityBuy",
@@ -39,7 +52,7 @@ var listProduct = function(){
         // console.log(answer);
         var quantityBuy= parseInt(answer.quantityBuy);
         // console.log(quantityBuy);
-        connection.query("SElECT Price, StockQuantity FROM products WHERE ?", [{
+        connection.query("SElECT * FROM products WHERE ?", [{
                 itemID: answer.item
             }], function(err, respond) {
                 // console.log(respond);
@@ -50,6 +63,15 @@ var listProduct = function(){
                     console.log("Insufficient quantity!");
                     StartAgain();
                 } else {
+                    console.log("");
+                    console.log("=========================================");
+                    console.log("Selected order = "+ respond[0].ProductName);
+                    console.log("Unit price = $"+ respond[0].Price);
+                    console.log("Ordered quantity = "+parseInt(answer.quantityBuy));
+                    console.log("=========================================");
+                    console.log("");
+
+
                     //If the quantity is enough, fulfill customer's order and update the store
                     StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
                     // console.log(StockQuantity);
@@ -61,7 +83,10 @@ var listProduct = function(){
                     }], function(err, respond){
                         // console.log(respond);
                         console.log("Our inventory is updated!");
+                        console.log("=========================================");
                         console.log("Total cost for your order is $",Total);
+                        console.log("=========================================");
+                        console.log("");
                         StartAgain();
                     });
       
@@ -83,6 +108,7 @@ var StartAgain = function(){
         if(answer.buyOrnot.toUpperCase()=="YES"){
             listProduct();  
         } else {
+            console.log("");
             console.log("Thank you for coming and have nice day!");
         }
 
