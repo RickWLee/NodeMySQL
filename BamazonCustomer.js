@@ -49,7 +49,7 @@ var listProduct = function(){
         type: "input",
         message:  "How many units you want to buy?",
     }]).then(function(answer) {
-        // console.log(answer);
+        console.log(answer);
         var quantityBuy= parseInt(answer.quantityBuy);
         // console.log(quantityBuy);
         connection.query("SELECT * FROM products WHERE ?", [{
@@ -76,6 +76,8 @@ var listProduct = function(){
                     StockQuantity=respond[0].StockQuantity-parseInt(answer.quantityBuy);
                     // console.log(StockQuantity);
                     var Total= respond[0].Price*quantityBuy;
+                    
+
                     connection.query("UPDATE products SET ? WHERE ?", [{
                         StockQuantity: StockQuantity
                     },{

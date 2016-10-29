@@ -84,7 +84,31 @@ function viewStocklow(){
 // 	* If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store. 
 function addInv(){
     //Need to display all inventory so manager can select item to add.
+    connection.query('SELECT * FROM products', function(err, respond)
+    {
+        for (var i=0;i<respond.length; i++){
+        console.log(respond[i].ItemID+"    "+respond[i].ProductName+"   |   Unit Price = USD$ "+respond[i].Price+"    Quantity = "+respond[i].StockQuantity);
+    }
+
     //prompt how many he wants to add for the selected item.
+    inquirer.prompt([{
+        name: "item",
+        type: "input",
+        message:  "What product you want to add inventory? [please type itemID]",
+        validate: function(value){
+            if (isNaN(value) == false){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },{
+
+        
+
+    }])
+
+    })
 
 
 }
