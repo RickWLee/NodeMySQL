@@ -25,11 +25,11 @@ connection.connect(function(err) {
 //Display all products
 var listProduct = function(){
        
-	connection.query('SElECT * FROM products', function(err, respond){
+	connection.query('SELECT * FROM products', function(err, respond){
 		// console.log(respond); 
         for (var i=0; i<respond.length; i++){
      
-            console.log(respond[i].ItemID+"    "+respond[i].ProductName+"    "+respond[i].Price);
+            console.log(respond[i].ItemID+"    "+respond[i].ProductName+"   |   Unit Price = USD$ "+respond[i].Price);
         }
 
     inquirer.prompt([{
@@ -52,7 +52,7 @@ var listProduct = function(){
         // console.log(answer);
         var quantityBuy= parseInt(answer.quantityBuy);
         // console.log(quantityBuy);
-        connection.query("SElECT * FROM products WHERE ?", [{
+        connection.query("SELECT * FROM products WHERE ?", [{
                 itemID: answer.item
             }], function(err, respond) {
                 // console.log(respond);
@@ -97,7 +97,7 @@ var listProduct = function(){
 }
 
 
-var StartAgain = function(){
+function StartAgain(){
     inquirer.prompt({
         name: "buyOrnot",
         type: "rawlist",
