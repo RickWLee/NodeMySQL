@@ -49,7 +49,7 @@ var listProduct = function(){
         type: "input",
         message:  "How many units you want to buy?",
     }]).then(function(answer) {
-        console.log(answer);
+        // console.log(answer);
         var quantityBuy= parseInt(answer.quantityBuy);
         // console.log(quantityBuy);
         connection.query("SELECT * FROM products WHERE ?", [{
