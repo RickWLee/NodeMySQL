@@ -18,7 +18,8 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    mgrMenu();
+
+   
 });
 
 // 	* List a set of menu options: 
@@ -66,22 +67,28 @@ var mgrMenu = function() {
 
 // 	* If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
 function viewSales(){
-    console.reset();
+    // console.reset();
 	connection.query('SELECT * FROM products', function(err, respond){
 		console.table(respond); 
 	});
-	//Ask user to go back to main menu or exit program
-
+	//Ask user to go back to main menu
+    returnTomenu();
+    
 }
 // 	* If a manager selects `View Low Inventory`, then it should list all items with a inventory count lower than five.
 function viewStocklow(){
-    console.reset();
+   // console.reset();
     connection.query('SELECT * FROM products WHERE StockQuantity < ?', 
         [5],
         function(err, respond){
+            // console.log(respond);
         console.table(respond); 
         });
-    //Ask user to Add Inv or go back to main menu.
+
+    //go back to main menu.
+    returnTomenu();
+   
+
 
 }
 // 	* If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store. 
@@ -97,14 +104,37 @@ function addInv(){
 }
 // 	* If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
 function addProdnew(){
+    //list all the product existing in the database
         connection.query('SELECT * FROM products', function(err, respond){
         console.table(respond); 
     });
-    //list all the product existing in the database
+    
     //Allow manager to add "new product" in the database
 
 }
 
+function returnTomenu(){
+
+    console.log("=========================");
+    inquirer.prompt({
+        name: "returnTomenu",
+        type: "input",
+        message: "Back to Menu [Enter] ",
+    
+    }).then(function(answer){
+        // console.log(answer);
+        if(answer.returnTomenu.toUpperCase()==""){
+            mgrMenu();  
+        } else {
+            mgrMenu(); 
+        }
+
+    })
+    console.log("");
+    console.log("=========================");}
+
 console.reset = function (){
   return process.stdout.write('\033c');
 }
+
+mgrMenu();
