@@ -71,7 +71,7 @@ var listProduct = function(){
                     console.log("");
                     console.log("=========================================");
                     console.log("Selected order = "+ respond[0].ProductName);
-                    console.log("Unit price = $"+ respond[0].Price);
+                    console.log("Unit price = $"+ parseFloat(respond[0].Price));
                     console.log("Ordered quantity = "+parseInt(answer.quantityBuy));
                     console.log("=========================================");
                     console.log("");
