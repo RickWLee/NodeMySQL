@@ -5,7 +5,7 @@
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-
+require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -23,14 +23,19 @@ connection.connect(function(err) {
 });
 
 //Display all products
+
+
+
+
 var listProduct = function(){
-       
-	connection.query('SELECT * FROM products', function(err, respond){
-		// console.log(respond); 
-        for (var i=0; i<respond.length; i++){
+    console.reset();
+	connection.query('SELECT ItemID,ProductName,Price FROM products', function(err, respond){
+		console.table(respond); 
+
+        // for (var i=0; i<respond.length; i++){
      
-            console.log(respond[i].ItemID+"    "+respond[i].ProductName+"   |   Unit Price = USD$ "+respond[i].Price);
-        }
+        //     console.log(respond[i].ItemID+"    "+respond[i].ProductName+"   |   Unit Price = USD$ "+respond[i].Price);
+        // }
 
     inquirer.prompt([{
         name: "item",
@@ -118,6 +123,9 @@ function StartAgain(){
 
 }
 
-
+console.reset = function (){
+  return process.stdout.write('\033c');
+}
 listProduct();
+
 
