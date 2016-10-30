@@ -71,7 +71,7 @@ var listProduct = function(){
                     console.log("");
                     console.log("=========================================");
                     console.log("Selected order = "+ respond[0].ProductName);
-                    console.log("Unit price = $"+ parseFloat(respond[0].Price));
+                    console.log("Unit price = $"+ respond[0].Price.toFixed(2));
                     console.log("Ordered quantity = "+parseInt(answer.quantityBuy));
                     console.log("=========================================");
                     console.log("");
@@ -91,7 +91,7 @@ var listProduct = function(){
                         // console.log(respond);
                         console.log("Our inventory is updated!");
                         console.log("=========================================");
-                        console.log("Total cost for your order is $",Total);
+                        console.log("Total cost for your order is $",Total.toFixed(2));
                         console.log("=========================================");
                         console.log("");
                         StartAgain();
