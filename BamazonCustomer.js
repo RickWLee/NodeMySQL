@@ -5,7 +5,9 @@
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-require('console.table');
+// require('console.table');
+var table=require('text-table');
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -13,6 +15,7 @@ var connection = mysql.createConnection({
     user: "root", //Your username
     password: "", //Your password
     database: "Bamazon"
+
 });
 
 
@@ -20,22 +23,49 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
+    console.reset();
 });
 
 //Display all products
 
 
-
-
 var listProduct = function(){
     console.reset();
-	connection.query('SELECT ItemID,ProductName,Price FROM products', function(err, respond){
-		console.table(respond); 
+	connection.query('SELECT * FROM products', function(err, respond){
+		// console.table(respond); 
 
+        //***** create new table format**************************
+      
+        // var newListprod =[];
         // for (var i=0; i<respond.length; i++){
-     
-        //     console.log(respond[i].ItemID+"    "+respond[i].ProductName+"   |   Unit Price = USD$ "+respond[i].Price);
+            // var RowDataPacket = {
+            //     ItemID: respond[i].ItemID,
+            //     ProductName: respond[i].ProductName,
+            //     Price: respond[i].Price.toFixed(2)
+            // }
+            // newListprod.push(RowDataPacket);
         // }
+        // console.table(newListprod);
+     
+        //****** text.table code***************************
+        var built = [[],['ItemID','ProductName','Price(US$)'],['======','===========','==========']];
+        for (var i=0;i<respond.length; i++){
+            var r = 
+                [
+                respond[i].ItemID,
+                respond[i].ProductName,
+                respond[i].Price.toFixed(2)
+                ]
+            built.push(r); 
+                }
+            var s = {align: ['r','l','r']}
+            // $(built).appends(s);
+            // console.log(built);
+            var t= table(built,s);
+
+           console.log(t);
+           console.log("");
+           console.log("");
 
     inquirer.prompt([{
         name: "item",
@@ -122,6 +152,8 @@ function StartAgain(){
     })
 
 }
+
+
 
 console.reset = function (){
   return process.stdout.write('\033c');

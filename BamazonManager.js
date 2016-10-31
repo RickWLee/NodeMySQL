@@ -68,8 +68,10 @@ var mgrMenu = function() {
 // 	* If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
 function viewSales(){
     // console.reset();
-	connection.query('SELECT * FROM products', function(err, respond){
-		console.table(respond); 
+	connection.query('SELECT * FROM products ORDER BY DepartmentName, ItemID', function(err, respond){
+		console.log(respond);
+        console.table(respond);
+
 	});
 	//Ask user to go back to main menu
     returnTomenu();
