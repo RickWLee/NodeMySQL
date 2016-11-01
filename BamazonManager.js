@@ -3,7 +3,6 @@
 // * Create a new Node application called `BamazonManager.js`. Running this application will:
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-// require('console.table');
 var table=require('text-table');
 
 var connection = mysql.createConnection({
@@ -134,8 +133,26 @@ function viewStocklow(){
 // 	* If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store. 
 function addInv(){
     //Need to display all inventory so manager can select item to add.
+        console.reset();
         connection.query('SELECT * FROM products', function(err, respond){
-        console.table(respond);
+        var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)','Quantity'],['-----','-----------','--------------','-----------','--------']];
+        for (var i=0; i<respond.length; i++){
+
+            var r = [
+                respond[i].ItemID,
+                respond[i].ProductName,
+                respond[i].DepartmentName,
+                respond[i].Price.toFixed(2),
+                respond[i].StockQuantity
+                ]
+
+            built.push(r);   
+        }
+        var s={align: ['l','l','l','r','r']}
+        var t = table(built,s);
+        console.log(t);
+
+
                inquirer.prompt([{
                     name: "item",
                     type: "input",
@@ -165,11 +182,6 @@ function addInv(){
 
 
             })
-
-
-
-
-
 
 
     });
