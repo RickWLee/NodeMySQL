@@ -5,7 +5,6 @@
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-// require('console.table');
 var table=require('text-table');
 
 
@@ -50,8 +49,7 @@ var listProduct = function(){
         //****** text.table code***************************
         var built = [[],['ItemID','ProductName','Price(US$)'],['======','===========','==========']];
         for (var i=0;i<respond.length; i++){
-            var r = 
-                [
+            var r = [
                 respond[i].ItemID,
                 respond[i].ProductName,
                 respond[i].Price.toFixed(2)
