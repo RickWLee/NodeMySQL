@@ -57,8 +57,9 @@ var mgrMenu = function() {
                 addInv();
             break;
 
-            case 'add New Product':
+            case 'Add New Product':
                 addProdnew();
+
             break;
 
         }
@@ -169,8 +170,9 @@ function addInv(){
 // 	* If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
 function addProdnew(){
     //list all the product existing in the database
+        console.reset();
         connection.query('SELECT * FROM products', function(err, respond){
-        console.table(respond); 
+        buildTable(respond);
     });
     
     //Allow manager to add "new product" in the database
@@ -179,7 +181,7 @@ function addProdnew(){
 
 function buildTable(respond){
 
-           var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)','Quantity'],['-----','-----------','--------------','-----------','--------']];
+        var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)','Quantity'],['-----','-----------','--------------','-----------','--------']];
         for (var i=0; i<respond.length; i++){
 
             var r = [
