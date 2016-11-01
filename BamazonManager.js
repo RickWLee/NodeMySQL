@@ -77,20 +77,21 @@ function viewSales(){
     console.reset();
 	connection.query('SELECT * FROM products ORDER BY DepartmentName, ItemID', function(err, respond){
 		// console.log(respond);
-        // console.table(respond);
-        var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)'],['-----','-----------','--------------','-----------']];
+        
+        var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)','Quantity'],['-----','-----------','--------------','-----------','--------']];
         for (var i=0; i<respond.length; i++){
 
             var r = [
                 respond[i].ItemID,
                 respond[i].ProductName,
                 respond[i].DepartmentName,
-                respond[i].Price.toFixed(2)
+                respond[i].Price.toFixed(2),
+                respond[i].StockQuantity
                 ]
 
             built.push(r);   
         }
-        var s={align: ['l','l','l','r']}
+        var s={align: ['l','l','l','r','r']}
         var t = table(built,s);
         console.log(t);
 
