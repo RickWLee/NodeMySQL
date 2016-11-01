@@ -147,7 +147,7 @@ function StartAgain(){
             console.log("Thank you for coming and have nice day!");
         }
 
-    })
+    });
 
 }
 

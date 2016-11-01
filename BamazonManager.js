@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 //Test connection
 connection.connect(function(err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId);
+    // console.log("connected as id " + connection.threadId);
    
 });
 
@@ -116,7 +116,7 @@ function addInv(){
                 return false;
             }
         }
-        //******************question
+        //******************question 2
     }, {
         name: "quantity",
         type: "input",
@@ -131,24 +131,39 @@ function addInv(){
             }], function(err, respond) {
 
                 var totalQty=respond[0].StockQuantity+quantityAdd;
+
                 console.log("===========================");
                 console.log("Selected ItemID =" + respond[0].ItemID);
                 console.log("Selected Product = "+ respond[0].ProductName);
                 console.log("Add Quantity units = "+quantityAdd);
                 console.log("The total quantity will be "+totalQty);
                 console.log("===========================");
-            
+                connection.query("UPDATE products SET? WHERE?",[{
+                    StockQuantity:totalQty
+                },{
+                    itemID: answer.item
+                }],function(err, respond){
+                    console.log("Inventory updated!");
+                   
 
-
-
-
-
+                inquirer.prompt({
+                    name: "update",
+                    type: "list",
+                    message: "Another transaction? ",
+                    choices: ["YES","NO"] 
+                }).then(function(answer){
+                    if(answer.update=="YES"){
+                        addInv();
+                    } else {
+                        mgrMenu();
+                    }
+                });
+                
+                });                
             });
         });
     });
 }
-
-
 
 
 // 	* If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
@@ -196,6 +211,7 @@ function returnTomenu(){
     })
     console.log("");
     console.log("=========================");}
+
 
 console.reset = function (){
   return process.stdout.write('\033c');
