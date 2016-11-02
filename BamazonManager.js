@@ -146,7 +146,7 @@ function addInv(){
                 }],function(err, respond){
                     console.log("Inventory updated!");
                    
-
+                //asking if need another transaction
                 inquirer.prompt({
                     name: "update",
                     type: "list",
@@ -159,7 +159,7 @@ function addInv(){
                         mgrMenu();
                     }
                 });
-                
+                //=========end of asking ============
                 });                
             });
         });
@@ -173,12 +173,61 @@ function addProdnew(){
         console.reset();
         connection.query('SELECT * FROM products', function(err, respond){
         buildTable(respond);
-    });
-    
+    // });
     //Allow manager to add "new product" in the database
+    inquirer.prompt([{
+        //******************question 1
+        name: "prodName",
+        type: "input",
+        message: "What is your product name?"
+    },{
+        //******************question 2
+        name: "deptName",
+        tyep: "input",
+        message: "What Department does this product belong to?"
+    },{
+        //******************question 3
+        name: "price",
+        type: "input",
+        message: "What is the sale unit price?"
+    },{
+        //******************question 4
+        name: "quantity",
+        type: "input",
+        message: "What is the quantity?"
+    }]).then(function(answer) {
+        console.log(answer);
+        var post = {
+                ProductName: answer.prodName,
+                DepartmentName: answer.deptName,
+                Price: answer.price,
+                StockQuantity: answer.quantity
+        }
+        console.log(post);
+        connection.query('INSERT INTO products SET ?', post, function(err,respond){
+            console.log("Product is updated!");
+                //asking if need another transaction
+                inquirer.prompt({
+                    name: "update",
+                    type: "list",
+                    message: "Add another product? ",
+                    choices: ["YES","NO"] 
+                }).then(function(answer){
+                    if(answer.update=="YES"){
+                        addProdnew();
+                    } else {
+                        mgrMenu();
+                    }
+                });
+                //=========end of asking ============
 
+        });
+    });
+    });
 }
 
+
+//build table function
 function buildTable(respond){
 
         var built = [[],['ItemID','ProductName','DepartmentName','Price(US$)','Quantity'],['-----','-----------','--------------','-----------','--------']];

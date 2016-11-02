@@ -88,9 +88,6 @@ var listProduct = function(){
         connection.query("SELECT * FROM products WHERE ?", [{
                 itemID: answer.item
             }], function(err, respond) {
-                // console.log(respond);
-                //cannot extract StockQuantity
-                // console.log(respond[0].StockQuantity);
                 // Check if the quantity is enough in the stock. if not show user "Insufficient quantity"
                 if (respond[0].StockQuantity < quantityBuy){
                     console.log("Insufficient quantity!");

@@ -28,8 +28,10 @@ VALUES ('toy train set','Kid', '50.00', '100'),
 
 USE Bamazon;
 Select * from products;
-Select ItemID, Price, DepartmentName from products order by DepartmentName;
+Select ItemID, Price, DepartmentName from products order by DepartmentName, ItemID;
 select * from products where Stockquantity <5;
+Select distinct DepartmentName from products order by DepartmentName;
 
 USE Bamazon;
 drop table products;
+
