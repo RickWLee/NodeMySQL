@@ -196,14 +196,14 @@ function addProdnew(){
         type: "input",
         message: "What is the quantity?"
     }]).then(function(answer) {
-        console.log(answer);
+        // console.log(answer);
         var post = {
                 ProductName: answer.prodName,
                 DepartmentName: answer.deptName,
                 Price: answer.price,
                 StockQuantity: answer.quantity
         }
-        console.log(post);
+        // console.log(post);
         connection.query('INSERT INTO products SET ?', post, function(err,respond){
             console.log("Product is updated!");
                 //asking if need another transaction
