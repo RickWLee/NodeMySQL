@@ -171,7 +171,7 @@ function addInv(){
 function addProdnew(){
     //list all the product existing in the database
         console.reset();
-        connection.query('SELECT * FROM products', function(err, respond){
+        connection.query('SELECT * FROM products ORDER BY DepartmentName, ItemID', function(err, respond){
         buildTable(respond);
     // });
     //Allow manager to add "new product" in the database
